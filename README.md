@@ -1,6 +1,6 @@
-# GatewayFronted
+# Gateway Fronted
 
-This project was generated with [Angular CLI] version 13
+This project was generated with Angular CLI version 13
 ## Development server
 
 ## Step 1
