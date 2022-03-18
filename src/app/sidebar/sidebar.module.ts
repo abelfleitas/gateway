@@ -6,7 +6,8 @@ import { SidebarComponent } from './sidebar.component';
 @NgModule({
     imports: [ 
         RouterModule,
-         CommonModule ],
+        CommonModule 
+    ],
     declarations: [ SidebarComponent ],
     exports: [ SidebarComponent ]
 })

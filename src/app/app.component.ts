@@ -7,22 +7,11 @@ import { Location } from '@angular/common';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Gateway';
+  title = 'Gateways';
 
   constructor(public location: Location) {}
 
   ngOnInit(){
-  }
-
-  isMap(path: string){
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    titlee = titlee.slice( 1 );
-    if(path == titlee){
-      return false;
-    }
-    else {
-      return true;
-    }
   }
 }
 
