@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { catchError, retry, throwError } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { environment } from "src/environments/environment";
 import { DeviceModel } from "../models/device-model";
 
+@Injectable({providedIn: 'root'})
 export class DeviceService {
 
     private readonly apiURL : string = environment.base_url + "/device";
@@ -16,29 +18,29 @@ export class DeviceService {
         }),
     };
 
-    getGateways(): Observable<DeviceModel> {
+    getDevices(): Observable<DeviceModel> {
         return this.http.get<DeviceModel>(this.apiURL + '/list')
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    getGateway(uuid: string): Observable<DeviceModel> {
+    getDevice(uuid: string): Observable<DeviceModel> {
         return this.http.get<DeviceModel>(this.apiURL + uuid)
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    createGateway(device: DeviceModel): Observable<DeviceModel> {
+    createDevice(device: DeviceModel): Observable<DeviceModel> {
         return this.http.post<DeviceModel>(this.apiURL + '/add',
           JSON.stringify(device), this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    updateGateway(uuid: string, device: DeviceModel): Observable<DeviceModel> {
+    updateDevice(uuid: string, device: DeviceModel): Observable<DeviceModel> {
         return this.http.put<DeviceModel>(this.apiURL + '/update/' + uuid,
           JSON.stringify(device),this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    deleteDateway(uuid: string) {
+    deleteDevice(uuid: string) {
         return this.http.delete<DeviceModel>(this.apiURL + '/delete/' + uuid, this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));
     }

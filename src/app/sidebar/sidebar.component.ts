@@ -9,7 +9,8 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'pe-7s-graph', class: '' },
+    { path: '/dashboard', title: 'Gateways',  icon: 'pe-7s-network', class: '' },
+    { path: '/devices', title: 'Devices',  icon: 'pe-7s-display1', class: '' },
 ];
 
 @Component({
