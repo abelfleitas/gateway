@@ -6,6 +6,8 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
 import { HomeComponent } from 'src/app/home/home.component';
 import { DeviceComponent } from 'src/app/views/device/device.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterDivicePipe } from 'src/app/utils/filter-device-pipe';
+import { FilterGatewayPipe } from 'src/app/utils/filter-gateway-pipe';
 
 @NgModule({
   imports: [
@@ -14,11 +16,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule,
+    NgbModule
   ],
   declarations: [
     HomeComponent, 
-    DeviceComponent
+    DeviceComponent,
+    FilterDivicePipe,
+    FilterGatewayPipe 
   ],
   bootstrap: [AdminLayoutModule]
 })
