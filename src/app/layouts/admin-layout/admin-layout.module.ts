@@ -8,8 +8,17 @@ import { DeviceComponent } from 'src/app/views/device/device.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterDivicePipe } from 'src/app/utils/filter-device-pipe';
 import { FilterGatewayPipe } from 'src/app/utils/filter-gateway-pipe';
-import { DefaultSimpleModalOptionConfig, defaultSimpleModalOptions, SimpleModalModule } from 'ngx-simple-modal';
+import { SimpleModalModule } from 'ngx-simple-modal';
 import { ConfirmComponent } from 'src/app/shared/dialog/confirm-component';
+import { AddGatewayComponent } from 'src/app/shared/dialog/components/gateway/add-gateway-component';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { AddDeviceComponent } from 'src/app/shared/dialog/components/device/add-device-component';
+
+const maskConfigFunction: () => Partial<IConfig> = () => {
+  return {
+    validation: true,
+  };
+};
 
 @NgModule({
   imports: [
@@ -19,14 +28,17 @@ import { ConfirmComponent } from 'src/app/shared/dialog/confirm-component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    SimpleModalModule.forRoot({ container:document.body })
+    SimpleModalModule.forRoot({ container:document.body }),
+    NgxMaskModule.forRoot(maskConfigFunction),
   ],
   declarations: [
     HomeComponent, 
     DeviceComponent,
     FilterDivicePipe,
     FilterGatewayPipe,
-    ConfirmComponent 
+    ConfirmComponent,
+    AddGatewayComponent, 
+    AddDeviceComponent
   ],
   entryComponents: [ConfirmComponent],
   bootstrap: [AdminLayoutModule]
