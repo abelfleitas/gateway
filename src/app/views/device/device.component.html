@@ -10,42 +10,41 @@
                     <div class="content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary action"><i class="glyphicon glyphicon-plus"></i> Add </button>
+                                <button type="button" class="btn btn-primary action" (click)="open($event)"><i class="glyphicon glyphicon-plus"></i> Add </button>
                                 <button type="button" class="btn btn-success action" disabled><i class="glyphicon glyphicon-edit"></i> Update </button>
                                 <button type="button" class="btn btn btn-danger action" disabled><i class="glyphicon glyphicon-trash"></i> Delete </button>
                             </div> 
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <form>
                                     <div class="mb-3 row">
                                       <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search:</label>
                                       <div class="col-sm-3 col-xs-9 col-sm-auto">
-                                        <input id="table-filtering-search" class="form-control" type="text">
+                                        <input id="table-filtering-search" autocomplete="off" class="form-control" type="text" [(ngModel)]="searchTextDevice">
                                       </div>
                                     </div>
-                                </form>
 
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
                                       <th scope="col">UID</th>
-                                      <th scope="col" sortable="country">Vendor</th>
-                                      <th scope="col" sortable="area">Date</th>
-                                      <th scope="col" sortable="population" >Status</th>
+                                      <th scope="col" sortable="vendor">Vendor</th>
+                                      <th scope="col" sortable="date">Date</th>
+                                      <th scope="col" sortable="status" >Status</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                      <td scope="row"></td>
-                                      <td scope="row"></td>
-                                      <td scope="row"></td>
-                                      <td scope="row"></td>
+                                    <tr *ngFor="let d of devices | filterDevice:searchTextDevice">
+                                      <td scope="row">{{ d.id }}</td>
+                                      <td scope="row">{{ d.vendor }}</td>
+                                      <td scope="row">{{ d.created | date: 'MM/dd/YYYY' }}</td>
+                                      <td scope="row">{{ d.status.toString().toLowerCase() }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-between p-2">
-                               
+                                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCountries()">
+                                    </ngb-pagination>
                                 </div>
                             </div>   
                         </div>

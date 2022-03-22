@@ -18,8 +18,8 @@ export class GatewayService {
         }),
     };
 
-    getGateways(): Observable<GatewayModel> {
-        return this.http.get<GatewayModel>(this.apiURL + '/list')
+    getGateways(): Observable<GatewayModel[]> {
+        return this.http.get<GatewayModel[]>(this.apiURL + '/list')
           .pipe(retry(1), catchError(this.handleError));
     }
 

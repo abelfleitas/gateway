@@ -1,6 +1,5 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModel } from 'src/app/models/device-model';
 import { DeviceService } from 'src/app/services/device-service';
 
@@ -8,24 +7,44 @@ import { DeviceService } from 'src/app/services/device-service';
   selector: 'app-device',
   templateUrl: './device.component.html',
   styleUrls: ['./device.component.scss'],
-  providers: [DecimalPipe]
+  providers: [NgbModalConfig, NgbModal]
 })
 export class DeviceComponent implements OnInit {
 
-  private listDevices = new Subject<DeviceModel>();
-  public ListDevices = this.listDevices.asObservable();
+  public devices: DeviceModel[] = [];
+  searchTextDevice = '';
+  page = 1;
+  pageSize = 5;
+  collectionSize!: number;
+  devicesArr: DeviceModel[] = [];
 
   constructor(
-    private deviceService: DeviceService) { 
+    private deviceService: DeviceService,
+    config: NgbModalConfig, 
+    private modalService: NgbModal) {
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  open(content: any) {
+    this.modalService.open(content);
   }
 
   public getData(){
     this.deviceService.getDevices().subscribe(x => {
-      this.listDevices.next(x);
-    })
+      this.devices = x;
+      this.collectionSize = this.devices.length;
+    });
+  }
+
+  public refreshCountries() {
+    this.devicesArr = this.devices
+      .map((device, i) => ({x: i + 1, ...device}))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 }
 

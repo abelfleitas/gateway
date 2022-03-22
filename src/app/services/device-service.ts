@@ -18,8 +18,8 @@ export class DeviceService {
         }),
     };
 
-    getDevices(): Observable<DeviceModel> {
-        return this.http.get<DeviceModel>(this.apiURL + '/list')
+    getDevices(): Observable<DeviceModel[]> {
+        return this.http.get<DeviceModel[]>(this.apiURL + '/list')
           .pipe(retry(1), catchError(this.handleError));
     }
 

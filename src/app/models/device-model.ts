@@ -1,8 +1,8 @@
 import { StatusEnum } from "./enums/etatus-enum";
 
 export interface DeviceModel {
-    uuid: string,
+    id: string,
     vendor: string,
-    date: Date,
+    created: Date,
     status: StatusEnum 
 }

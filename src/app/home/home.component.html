@@ -1,3 +1,17 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>Hello, World!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+    </div>
+</ng-template>
+  
+
 <div class="main-content">
     <div class="container-fluid">
         <div class="row">
@@ -10,36 +24,41 @@
                     <div class="content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary action"><i class="glyphicon glyphicon-plus"></i> Add </button>
+                                <button class="btn btn-primary action" (click)="open($event)"><i class="glyphicon glyphicon-plus"></i> Add </button>
                                 <button type="button" class="btn btn-success action" disabled><i class="glyphicon glyphicon-edit"></i> Update </button>
                                 <button type="button" class="btn btn btn-danger action" disabled><i class="glyphicon glyphicon-trash"></i> Delete </button>
                             </div> 
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <form>
-                                    <div class="mb-3 row">
-                                      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search:</label>
-                                      <div class="col-sm-3 col-xs-9 col-sm-auto">
-                                        <input id="table-filtering-search" class="form-control" type="text">
-                                      </div>
+                                <div class="mb-3 row">
+                                    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search:</label>
+                                    <div class="col-sm-3 col-xs-9 col-sm-auto">
+                                    <input id="table-filtering-search" class="form-control" type="text"  [(ngModel)]="searchText">
                                     </div>
-                                </form>
+                                </div>
 
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                      
+                                        <td>Serial Number</td>
+                                        <td>IP v4</td>
+                                        <td>Name</td>
+                                        <td>Total Devices</td>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                      
+                                    <tr *ngFor='let g of listGateway | filterGateway:searchText'>
+                                      <td>{{ g.serialNumber }}</td>
+                                      <td>{{ g.ip4 }}</td>
+                                      <td>{{ g.name }}</td>
+                                      <td>{{ g.devices.length }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-between p-2">
-                               
+                                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCountries()">
+                                    </ngb-pagination>
                                 </div>
                             </div>   
                         </div>
