@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleModalService } from 'ngx-simple-modal';
 import { DeviceModel } from 'src/app/models/device-model';
+import { NotifyTypeEnum } from 'src/app/models/enums/notify-type-enum';
 import { DeviceService } from 'src/app/services/device-service';
+import { NotificationService } from 'src/app/services/notifications-services';
+import { ConfirmComponent } from 'src/app/shared/dialog/confirm-component';
 
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
   styleUrls: ['./device.component.scss'],
-  providers: [NgbModalConfig, NgbModal]
 })
 export class DeviceComponent implements OnInit {
 
@@ -20,24 +22,20 @@ export class DeviceComponent implements OnInit {
 
   constructor(
     private deviceService: DeviceService,
-    config: NgbModalConfig, 
-    private modalService: NgbModal) {
-    config.backdrop = 'static';
-    config.keyboard = false;
+    private notify: NotificationService,
+    private simpleModalService:SimpleModalService) {
   }
 
   ngOnInit(): void {
     this.getData();
   }
 
-  open(content: any) {
-    this.modalService.open(content);
-  }
-
   public getData(){
     this.deviceService.getDevices().subscribe(x => {
       this.devices = x;
       this.collectionSize = this.devices.length;
+    }, err => {
+      this.notify.showNotification(err, NotifyTypeEnum.DANGER);
     });
   }
 
@@ -45,6 +43,31 @@ export class DeviceComponent implements OnInit {
     this.devicesArr = this.devices
       .map((device, i) => ({x: i + 1, ...device}))
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
+
+  public editRow(device: DeviceModel){
+    this.notify.showNotification(device.id.toString(), NotifyTypeEnum.SUCCESS)
+  }
+
+  deleteRow(uuid: string) {
+    this.deviceService.deleteDevice(uuid)
+    .subscribe(x => {
+      this.notify.showNotification("Divice has been deleted", NotifyTypeEnum.SUCCESS)
+      this.getData();
+    }, err => {
+      this.notify.showNotification(err, NotifyTypeEnum.DANGER)
+    });
+  }
+
+  showConfirm(device: DeviceModel) {
+    let disposable = this.simpleModalService.addModal(ConfirmComponent, {
+          title: 'Please can you confirm',
+          message: 'Are you sure to remove this gateway?'
+    }).subscribe((isConfirmed)=>{
+      if(isConfirmed) {
+        this.deleteRow(device.id);
+      }
+    });
   }
 }
 

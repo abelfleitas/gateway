@@ -10,7 +10,8 @@ export class DeviceService {
 
     private readonly apiURL : string = environment.base_url + "/device";
 
-    constructor(private http: HttpClient) {}
+    constructor(
+      private http: HttpClient) {}
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -53,10 +54,7 @@ export class DeviceService {
         } else {
           // Get server-side error
           errorMessage = `Error Code: ${error.status} \nMessage: ${error.message}`;
-        }
-        //display errors    
-        window.alert(errorMessage);
-        
+        }        
         return throwError(() => {
           return errorMessage;
         });

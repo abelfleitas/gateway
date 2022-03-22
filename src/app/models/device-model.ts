@@ -1,4 +1,4 @@
-import { StatusEnum } from "./enums/etatus-enum";
+import { StatusEnum } from "./enums/status-enum";
 
 export interface DeviceModel {
     id: string,
