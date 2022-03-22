@@ -36,6 +36,7 @@
               "node_modules/animate.css/animate.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/light-bootstrap-dashboard.scss",
+              "node_modules/ngx-simple-modal/styles/simple-modal.css",
               "src/assets/css/demo.scss"
             ],
             "scripts": [
@@ -109,9 +110,11 @@
             ],
             "styles": [
               "src/styles.scss",
+              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/animate.css/animate.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/light-bootstrap-dashboard.scss",
+              "node_modules/ngx-simple-modal/styles/simple-modal.css",
               "src/assets/css/demo.scss"
             ],
             "scripts": [

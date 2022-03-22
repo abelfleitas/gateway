@@ -10,7 +10,8 @@ export class GatewayService {
 
     private readonly apiURL : string = environment.base_url + "/gateway";
 
-    constructor(private http: HttpClient) {}
+    constructor(
+      private http: HttpClient) {}
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -40,7 +41,7 @@ export class GatewayService {
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    deleteDateway(id: number) {
+    deleteGateway(id: number) {
         return this.http.delete<GatewayModel>(this.apiURL + '/delete/' + id, this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));
     }
@@ -54,9 +55,6 @@ export class GatewayService {
           // Get server-side error
           errorMessage = `Error Code: ${error.status} \nMessage: ${error.message}`;
         }
-        //display errors    
-        window.alert(errorMessage);
-        
         return throwError(() => {
           return errorMessage;
         });
