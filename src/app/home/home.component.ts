@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { GatewayService } from '../services/gateway-service';
-import { GatewayModel } from '../models/gateway-model';
+import { AddGatewayModel, GatewayModel, UpdateGatewayModel } from '../models/gateway-model';
 import { NotificationService } from '../services/notifications-services';
 import { NotifyTypeEnum } from '../models/enums/notify-type-enum';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmComponent } from '../shared/dialog/confirm-component';
+import { AddGatewayComponent } from '../shared/dialog/components/gateway/add-gateway-component';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private gatewayService: GatewayService,
     private notify: NotificationService,
-    private simpleModalService:SimpleModalService) 
+    private simpleModalService: SimpleModalService) 
     {}
 
   ngOnInit() {
@@ -45,8 +46,22 @@ export class HomeComponent implements OnInit {
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
-  public editRow(gateway: GatewayModel){
-    this.notify.showNotification(gateway.id.toString(), NotifyTypeEnum.SUCCESS)
+  public editRow(gateway: GatewayModel) {
+    this.simpleModalService.addModal(AddGatewayComponent, {
+      dialogName: 'Update Gateway',
+      gateway: gateway,
+      type: "update"
+      }).subscribe((result: UpdateGatewayModel) => {
+        if(result != null) {
+          this.gatewayService.updateGateway(gateway.id,result)
+          .subscribe(x => {
+            this.getData();
+            this.notify.showNotification("Gateway has been updated", NotifyTypeEnum.INFO)
+          }, err => {
+            this.notify.showNotification(err, NotifyTypeEnum.DANGER)
+          });
+      }    
+    });
   }
 
   deleteRow(id: number) {
@@ -60,7 +75,7 @@ export class HomeComponent implements OnInit {
   }
 
   showConfirm(gateway: GatewayModel) {
-    let disposable = this.simpleModalService.addModal(ConfirmComponent, {
+    this.simpleModalService.addModal(ConfirmComponent, {
           title: 'Please can you confirm',
           message: 'Are you sure to remove this gateway?'
     }).subscribe((isConfirmed)=>{
@@ -68,5 +83,22 @@ export class HomeComponent implements OnInit {
         this.deleteRow(gateway.id);
       }
     });
+  }
+
+  public showModal() {
+    this.simpleModalService.addModal(AddGatewayComponent, {
+          dialogName: 'Add Gateway',
+          gateway: undefined,
+          type: 'add'
+      }).subscribe((result: AddGatewayModel) => {
+        if(result != null) {
+          this.gatewayService.createGateway(result).subscribe(x => {
+            this.getData();
+            this.notify.showNotification("Gateway has been added", NotifyTypeEnum.SUCCESS)
+          }, err => {
+            this.notify.showNotification(err, NotifyTypeEnum.DANGER)
+          });  
+        }    
+      });
   }
 }

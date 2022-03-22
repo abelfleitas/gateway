@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { catchError, retry, throwError } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { environment } from "src/environments/environment";
-import { GatewayModel } from "../models/gateway-model";
+import { AddGatewayModel, GatewayModel, UpdateGatewayModel } from "../models/gateway-model";
 
 @Injectable({providedIn: 'root'})
 export class GatewayService {
@@ -29,13 +29,13 @@ export class GatewayService {
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    createGateway(gateway: GatewayModel): Observable<GatewayModel> {
+    createGateway(gateway: AddGatewayModel): Observable<GatewayModel> {
         return this.http.post<GatewayModel>(this.apiURL + '/add',
           JSON.stringify(gateway), this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));
     }
 
-    updateGateway(id: number, gateway: GatewayModel): Observable<GatewayModel> {
+    updateGateway(id: number, gateway: UpdateGatewayModel): Observable<GatewayModel> {
         return this.http.put<GatewayModel>(this.apiURL + '/update/' + id,
           JSON.stringify(gateway),this.httpOptions)
           .pipe(retry(1), catchError(this.handleError));

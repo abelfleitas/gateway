@@ -6,3 +6,15 @@ export interface DeviceModel {
     created: Date,
     status: StatusEnum 
 }
+
+export interface DialogDeviceModel {
+
+}
+
+export interface AddDeviceModel {
+
+}
+
+export interface UpdateDeviceModel {
+    
+}
