@@ -3,7 +3,9 @@ import { Injectable } from "@angular/core";
 import { catchError, retry, throwError } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { environment } from "src/environments/environment";
+import { NotifyTypeEnum } from "../models/enums/notify-type-enum";
 import { AddGatewayModel, GatewayModel, UpdateGatewayModel } from "../models/gateway-model";
+import { NotificationService } from "./notifications-services";
 
 @Injectable({providedIn: 'root'})
 export class GatewayService {
@@ -11,7 +13,8 @@ export class GatewayService {
     private readonly apiURL : string = environment.base_url + "/gateway";
 
     constructor(
-      private http: HttpClient) {}
+      private http: HttpClient,
+      private notifyService: NotificationService) {}
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -55,6 +58,8 @@ export class GatewayService {
           // Get server-side error
           errorMessage = `Error Code: ${error.status} \nMessage: ${error.message}`;
         }
+
+        this.notifyService.showNotification(errorMessage, NotifyTypeEnum.DANGER);
         return throwError(() => {
           return errorMessage;
         });

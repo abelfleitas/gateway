@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
-import { DeviceModel } from 'src/app/models/device-model';
+import { AddDeviceModel, DeviceModel } from 'src/app/models/device-model';
 import { NotifyTypeEnum } from 'src/app/models/enums/notify-type-enum';
 import { DeviceService } from 'src/app/services/device-service';
 import { NotificationService } from 'src/app/services/notifications-services';
+import { AddDeviceComponent } from 'src/app/shared/dialog/components/device/add-device-component';
 import { ConfirmComponent } from 'src/app/shared/dialog/confirm-component';
 
 @Component({
@@ -45,8 +46,20 @@ export class DeviceComponent implements OnInit {
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
-  public editRow(device: DeviceModel){
-    this.notify.showNotification(device.id.toString(), NotifyTypeEnum.SUCCESS)
+  public editRow(device: DeviceModel) {
+    this.simpleModalService.addModal(AddDeviceComponent, {
+      dialogName: 'Update Device',
+      device: device,
+      type: 'update'
+    }).subscribe((result: AddDeviceModel)=>{
+      if(result != null){
+        this.deviceService.updateDevice(device.id,result)
+        .subscribe(x => {
+          this.getData();
+          this.notify.showNotification("Device has been updated", NotifyTypeEnum.INFO)
+        });
+      }
+    });
   }
 
   deleteRow(uuid: string) {
@@ -54,18 +67,32 @@ export class DeviceComponent implements OnInit {
     .subscribe(x => {
       this.notify.showNotification("Divice has been deleted", NotifyTypeEnum.SUCCESS)
       this.getData();
-    }, err => {
-      this.notify.showNotification(err, NotifyTypeEnum.DANGER)
     });
   }
 
   showConfirm(device: DeviceModel) {
-    let disposable = this.simpleModalService.addModal(ConfirmComponent, {
+    this.simpleModalService.addModal(ConfirmComponent, {
           title: 'Please can you confirm',
           message: 'Are you sure to remove this gateway?'
     }).subscribe((isConfirmed)=>{
       if(isConfirmed) {
         this.deleteRow(device.id);
+      }
+    });
+  }
+
+  showModal(){
+    this.simpleModalService.addModal(AddDeviceComponent, {
+      dialogName: 'Add Device',
+      device: undefined,
+      type: 'add'
+    }).subscribe((result: AddDeviceModel)=>{
+      if(result != null){
+        this.deviceService.createDevice(result)
+        .subscribe(x => {
+          this.getData();
+          this.notify.showNotification("Device has been added", NotifyTypeEnum.SUCCESS)
+        });
       }
     });
   }

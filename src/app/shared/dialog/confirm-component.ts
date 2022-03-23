@@ -4,7 +4,8 @@ import { ConfirmModel } from '../../models/confirm-model';
 
 @Component({
     selector: 'confirm',
-    templateUrl: 'confirm-component.html'
+    templateUrl: 'confirm-component.html',
+    styleUrls: ['confirm-component.scss'],
 })
 export class ConfirmComponent extends SimpleModalComponent<ConfirmModel, boolean> 
     implements ConfirmModel {

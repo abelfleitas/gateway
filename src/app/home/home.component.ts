@@ -35,8 +35,6 @@ export class HomeComponent implements OnInit {
     this.gatewayService.getGateways().subscribe(x => {
       this.listGateway = x;
       this.collectionSize = this.listGateway.length;
-    }, err => {
-      this.notify.showNotification(err, NotifyTypeEnum.DANGER)
     })
   }
 
@@ -57,8 +55,6 @@ export class HomeComponent implements OnInit {
           .subscribe(x => {
             this.getData();
             this.notify.showNotification("Gateway has been updated", NotifyTypeEnum.INFO)
-          }, err => {
-            this.notify.showNotification(err, NotifyTypeEnum.DANGER)
           });
       }    
     });
@@ -69,8 +65,6 @@ export class HomeComponent implements OnInit {
     .subscribe(x => {
       this.notify.showNotification("Gateway has been deleted", NotifyTypeEnum.SUCCESS)
       this.getData();
-    }, err => {
-      this.notify.showNotification(err, NotifyTypeEnum.DANGER)
     });
   }
 
@@ -95,8 +89,6 @@ export class HomeComponent implements OnInit {
           this.gatewayService.createGateway(result).subscribe(x => {
             this.getData();
             this.notify.showNotification("Gateway has been added", NotifyTypeEnum.SUCCESS)
-          }, err => {
-            this.notify.showNotification(err, NotifyTypeEnum.DANGER)
           });  
         }    
       });
