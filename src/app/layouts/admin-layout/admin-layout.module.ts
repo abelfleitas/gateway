@@ -13,6 +13,9 @@ import { ConfirmComponent } from 'src/app/shared/dialog/confirm-component';
 import { AddGatewayComponent } from 'src/app/shared/dialog/components/gateway/add-gateway-component';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import { AddDeviceComponent } from 'src/app/shared/dialog/components/device/add-device-component';
+import { NotificationService } from 'src/app/services/notifications-services';
+import { DeviceService } from 'src/app/services/device-service';
+import { GatewayService } from 'src/app/services/gateway-service';
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
   return {
@@ -40,7 +43,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
     AddGatewayComponent, 
     AddDeviceComponent
   ],
-  entryComponents: [ConfirmComponent],
+  providers: [NotificationService,GatewayService, DeviceService],
+  entryComponents: [ConfirmComponent, AddGatewayComponent, AddDeviceComponent],
   bootstrap: [AdminLayoutModule]
 })
 

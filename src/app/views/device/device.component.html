@@ -10,43 +10,44 @@
                     <div class="content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-primary action"><i class="glyphicon glyphicon-plus"></i> Add </button>
+                                <button type="button" class="btn btn-primary action" (click)="showModal()"><i class="glyphicon glyphicon-plus"></i> Add </button>
                             </div> 
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                    <div class="mb-3 row">
+                                    <div class="row action">
                                       <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search:</label>
                                       <div class="col-sm-3 col-xs-9 col-sm-auto">
                                         <input id="table-filtering-search" autocomplete="off" class="form-control" type="text" [(ngModel)]="searchTextDevice">
                                       </div>
                                     </div>
-
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                      <th>UID</th>
-                                      <th>Vendor</th>
-                                      <th>Date</th>
-                                      <th>Status</th>
-                                      <td colspan="2">Actions</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr *ngFor="let d of devices | filterDevice:searchTextDevice">
-                                      <td scope="row">{{ d.id }}</td>
-                                      <td scope="row">{{ d.vendor }}</td>
-                                      <td scope="row">{{ d.created | date: 'MM/dd/YYYY' }}</td>
-                                      <td scope="row">{{ d.status.toString().toLowerCase() }}</td>
-                                       <td> <input type="button" class="btn btn-success" value="Edit" (click)="editRow(d)"/></td>
-                                      <td> <input type="button" class="btn btn btn-danger" value="Delete" (click)="showConfirm(d)"/></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="d-flex justify-content-between p-2">
-                                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCountries()">
-                                    </ngb-pagination>
-                                </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                              <th>UID</th>
+                                              <th>Vendor</th>
+                                              <th>Date</th>
+                                              <th>Status</th>
+                                              <th colspan="2">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr *ngFor="let d of devices | filterDevice:searchTextDevice">
+                                              <td scope="row">{{ d.id }}</td>
+                                              <td scope="row">{{ d.vendor }}</td>
+                                              <td scope="row">{{ d.created | date: 'MM/dd/YYYY' }}</td>
+                                              <td scope="row">{{ d.status.toString().toLowerCase() }}</td>
+                                               <td> <input type="button" class="btn btn-success" value="Edit" (click)="editRow(d)"/></td>
+                                              <td> <input type="button" class="btn btn btn-danger" value="Delete" (click)="showConfirm(d)"/></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>       
+                                    <div class="d-flex justify-content-between p-2">
+                                        <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCountries()">
+                                        </ngb-pagination>
+                                    </div>
                             </div>   
                         </div>
                     </div>

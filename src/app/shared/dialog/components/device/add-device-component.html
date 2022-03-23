@@ -1,0 +1,46 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h4>{{dialogName || ''}}</h4>
+    </div>
+    <div class="modal-body">
+
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)" id="form">
+        
+        <div class="form-group" [ngClass]="[(myForm.get('vendor')?.invalid  && ( myForm.get('vendor')?.dirty || myForm.get('vendor')?.touched )) ? 'has-error' : '']">
+          <label class="control-label" for="vendor">Vendor</label>
+          <input type="text" class="form-control" id="vendor" name="vendor" formControlName="vendor" placeholder="Vendor">
+          <div *ngIf="myForm.get('vendor')?.invalid && (myForm.get('vendor')?.dirty || myForm.get('vendor')?.touched)">
+            <span class="help-block">Please provide a vendor.</span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="[(myForm.get('status')?.invalid  && (myForm.get('status')?.dirty || myForm.get('status')?.touched)) ? 'has-error' : '']">
+          <label class="control-label" for="status">Status</label>
+          <select class="form-control" id="status" name="status" formControlName="status">     
+            <option value="">Choose a Status </option>    
+            <option *ngFor="let enum of status" [selected]="chckStatus( enum.toString() )">{{ enum }}</option>
+          </select>
+          <div *ngIf="myForm.get('status')?.invalid && (myForm.get('status')?.dirty || myForm.get('status')?.touched)">
+            <span class="help-block">Please provide a status.</span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="[(myForm.get('gatewayId')?.invalid  && (myForm.get('gatewayId')?.dirty || myForm.get('gatewayId')?.touched)) ? 'has-error' : '']">
+          <label for="gatewayId">Gateway</label>
+          <select class="form-control" id="gatewayId" name="gatewayId" formControlName="gatewayId">
+            <option value="">Choose a Gateway</option> 
+            <option *ngFor="let g of ( ListGateways| async)" value="{{ g.id }}" [selected]="chckGatewayId(g.id)">{{ g.name }}</option>
+          </select>
+          <div *ngIf="myForm.get('gatewayId')?.invalid && (myForm.get('gatewayId')?.dirty || myForm.get('gatewayId')?.touched)">
+            <span class="help-block">Please provide a Gateway.</span>
+          </div>
+        </div>
+
+      </form>
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="close()" >Cancel</button>
+      <button type="submit" class="btn btn-primary" form="form" [disabled]="myForm.invalid">OK</button>
+    </div>
+</div>
